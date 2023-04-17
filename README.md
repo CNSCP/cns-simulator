@@ -1,4 +1,4 @@
-# CNS Node
+# CNS Simulator
 
 ## Table of Contents
 
