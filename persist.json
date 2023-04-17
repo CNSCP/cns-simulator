@@ -1,0 +1,224 @@
+{
+  "utility/view": {
+    "context": "utility",
+    "name": "view",
+    "title": "View station",
+    "comment": "The view station for the building",
+    "profiles": [
+      {
+        "name": "padi.dataset",
+        "client": "utility/view",
+        "properties": {}
+      },
+      {
+        "name": "acme.monitor",
+        "client": "utility/view",
+        "properties": {}
+      },
+      {
+        "name": "acme.monitor",
+        "server": "utility/monitor",
+        "properties": {
+          "electric": "4W",
+          "gas": "6m&sup3;",
+          "water": "2m&sup3;"
+        }
+      },
+      {
+        "name": "padi.dataset",
+        "server": "utility/monitor",
+        "properties": {
+          "title": "Total consumption",
+          "values": "4, 6, 2",
+          "colours": "red, green, blue",
+          "labels": "Electric (W), Gas (m&sup3;), Water (m&sup3;)"
+        }
+      }
+    ]
+  },
+  "utility/monitor": {
+    "context": "utility",
+    "name": "monitor",
+    "title": "Monitor station",
+    "comment": "The monitoring station for the building",
+    "profiles": [
+      {
+        "name": "padi.dataset",
+        "server": "utility/monitor",
+        "properties": {
+          "title": "Total consumption",
+          "values": "4, 6, 2",
+          "colours": "red, green, blue",
+          "labels": "Electric (W), Gas (m&sup3;), Water (m&sup3;)"
+        }
+      },
+      {
+        "name": "acme.monitor",
+        "server": "utility/monitor",
+        "properties": {
+          "electric": "4W",
+          "gas": "6m&sup3;",
+          "water": "2m&sup3;"
+        }
+      },
+      {
+        "name": "acme.utility",
+        "client": "utility/monitor",
+        "properties": {}
+      },
+      {
+        "name": "acme.utility",
+        "server": "utility/electric",
+        "properties": {
+          "point": "AI5",
+          "period": "1s",
+          "units": "W",
+          "value": 4
+        }
+      },
+      {
+        "name": "acme.utility",
+        "server": "utility/gas",
+        "properties": {
+          "point": "AI9",
+          "period": "1s",
+          "units": "m&sup3;",
+          "value": 6
+        }
+      },
+      {
+        "name": "acme.utility",
+        "server": "utility/water",
+        "properties": {
+          "point": "AI3",
+          "period": "1s",
+          "units": "m&sup3;",
+          "value": 2
+        }
+      },
+      {
+        "name": "acme.monitor",
+        "client": "utility/view",
+        "properties": {}
+      },
+      {
+        "name": "padi.dataset",
+        "client": "utility/view",
+        "properties": {}
+      }
+    ]
+  },
+  "utility/electric": {
+    "context": "utility",
+    "name": "electric",
+    "title": "Electrical meter",
+    "comment": "The electrical meter for the building",
+    "profiles": [
+      {
+        "name": "acme.utility",
+        "server": "utility/electric",
+        "properties": {
+          "point": "AI5",
+          "period": "1s",
+          "units": "W",
+          "value": 4
+        }
+      },
+      {
+        "name": "acme.utility",
+        "client": "utility/monitor",
+        "properties": {}
+      }
+    ]
+  },
+  "utility/gas": {
+    "context": "utility",
+    "name": "gas",
+    "title": "Gas meter",
+    "comment": "The gas meter for the building",
+    "profiles": [
+      {
+        "name": "acme.utility",
+        "server": "utility/gas",
+        "properties": {
+          "point": "AI9",
+          "period": "1s",
+          "units": "m&sup3;",
+          "value": 6
+        }
+      },
+      {
+        "name": "acme.utility",
+        "client": "utility/monitor",
+        "properties": {}
+      }
+    ]
+  },
+  "utility/water": {
+    "context": "utility",
+    "name": "water",
+    "title": "Water meter",
+    "comment": "The water meter for the building",
+    "profiles": [
+      {
+        "name": "acme.utility",
+        "server": "utility/water",
+        "properties": {
+          "point": "AI3",
+          "period": "1s",
+          "units": "m&sup3;",
+          "value": 2
+        }
+      },
+      {
+        "name": "acme.utility",
+        "client": "utility/monitor",
+        "properties": {}
+      }
+    ]
+  },
+  "dataserver/server": {
+    "context": "dataserver",
+    "name": "server",
+    "title": "Server",
+    "comment": "Data server",
+    "profiles": [
+      {
+        "name": "padi.dataserver",
+        "server": "dataserver/server",
+        "properties": {
+          "uri": "http://database.com"
+        }
+      },
+      {
+        "name": "padi.dataserver",
+        "client": "dataserver/client",
+        "properties": {
+          "id": 1
+        }
+      }
+    ]
+  },
+  "dataserver/client": {
+    "context": "dataserver",
+    "name": "client",
+    "title": "Client",
+    "comment": "Data client",
+    "profiles": [
+      {
+        "name": "padi.dataserver",
+        "client": "dataserver/client",
+        "properties": {
+          "id": 1
+        }
+      },
+      {
+        "name": "padi.dataserver",
+        "server": "dataserver/server",
+        "properties": {
+          "uri": "http://database.com"
+        }
+      }
+    ]
+  }
+}

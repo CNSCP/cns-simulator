@@ -1,0 +1,169 @@
+<!doctype html>
+
+<!-- index.html - Simulator application -->
+<!-- Copyright 2023 Padi, Inc. All Rights Reserved. -->
+
+<html lang="en">
+<head>
+  <meta name="description" content="CNS Simulator">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link type="text/css" rel="stylesheet" href="/main.css"/>
+
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+
+  <script src="/config.js"></script>
+  <script src="/main.js"></script>
+
+  <title>Status - CNS Simulator</title>
+</head>
+
+<body>
+  <nav>
+    <h1>CNS Simulator</h1>
+    <a ripple tab="status" selected>Status</a>
+    <a ripple tab="nodes">Nodes</a>
+    <a ripple tab="import">Import</a>
+    <a ripple tab="export">Export</a>
+  </nav>
+
+  <section name="status">
+    <table>
+      <tr><th>Version</th><td id="version"></td></tr>
+      <tr><th>Environment</th><td id="environment"></td></tr>
+      <tr><th>Started</th><td id="started"></td></tr>
+      <tr><th>Used</th><td id="used"></td></tr>
+      <tr><th>Broker</th><td id="broker"></td></tr>
+      <tr><th>Identifier</th><td id="identifier"></td></tr>
+      <tr><th>Status</th><td>Running</td></tr>
+    </table>
+  </section>
+
+  <section hidden name="nodes">
+    <center id="offline"><div>
+      <mark primary><span>Offline</span></mark>
+    </div></center>
+    <table hidden grid id="online">
+    <tr>
+      <th>Contexts<button hidden icon add="context">&#xFF0B;</button></th>
+      <th>Nodes<button hidden icon add="node">&#xFF0B;</button></th>
+      <th>Properties<button hidden icon add="property">&#xFF0B;</button></th>
+      <th>Profiles<button hidden icon add="profile">&#xFF0B;</button></th>
+      <th><span id="heading1">Server</span></th>
+      <th>Connections</th>
+      <th><span id="heading2">Client</span></th>
+    </tr>
+    <tr>
+      <td><ol id="contexts"></ol></td>
+      <td><ol id="nodes"></ol></td>
+      <td><ul id="properties"></ul></td>
+      <td><ol id="profiles"></ol></td>
+      <td><ul id="properties1"></ul></td>
+      <td><ol id="connections"></ol></td>
+      <td><ul id="properties2"></ul></td>
+    </tr>
+    </table>
+  </section>
+
+  <section hidden name="import">
+    <table grid>
+    <tr><th>Import<nav><button name="import" secondary>Publish</button></nav></th></tr>
+    <tr><td><textarea></textarea></td></tr>
+    </table>
+  </section>
+
+  <section hidden name="export">
+    <table grid>
+    <tr><th>Export</th></tr>
+    <tr><td><textarea></textarea></td></tr>
+    </table>
+  </section>
+
+  <div hidden class="blocker"></div>
+
+  <dialog name="context">
+    <h1>Add context</h1>
+    <h5>Context</h5>
+    <input name="context" type="text" pattern="[a-zA-Z0-9]+" placeholder="Enter context name" required/>
+    <h5>Name</h5>
+    <input name="name" type="text" pattern="[a-zA-Z0-9]+" placeholder="Enter node name" required/>
+    <h5>Title</h5>
+    <input name="title" type="text" placeholder="Enter node title"/>
+    <h5>Comment</h5>
+    <input name="comment" type="text" placeholder="Enter node comment"/>
+    <nav>
+      <button name="cancel">Cancel</button>
+      <button name="ok" secondary>OK</button>
+    </nav>
+  </dialog>
+
+  <dialog name="node">
+    <h1>Add node</h1>
+    <h5>Name</h5>
+    <input name="name" type="text" pattern="[a-zA-Z0-9]+" placeholder="Enter node name" required/>
+    <h5>Title</h5>
+    <input name="title" type="text" placeholder="Enter node title"/>
+    <h5>Comment</h5>
+    <input name="comment" type="text" placeholder="Enter node comment"/>
+    <nav>
+      <button name="cancel">Cancel</button>
+      <button name="ok" secondary>OK</button>
+    </nav>
+  </dialog>
+
+  <dialog name="profile">
+    <h1>Add profile</h1>
+    <h5>Name</h5>
+    <input name="name" type="text" pattern="^[A-Za-z]([A-Za-z0-9\.]*)" placeholder="Enter profile name" required/>
+    <h5>Version</h5>
+    <input name="version" type="text" pattern="[0-9]+" placeholder="Enter profile version"/>
+    <h5>Role</h5>
+    <input id="server" name="role" type="radio" value="server"/><label for="server">Server</label>
+    <input id="client" name="role" type="radio" value="client"/><label for="client">Client</label>
+    <nav>
+      <button name="cancel">Cancel</button>
+      <button name="ok" secondary>OK</button>
+    </nav>
+  </dialog>
+
+  <dialog name="property">
+    <h1>Add property</h1>
+    <h5>Name</h5>
+    <input name="name" type="text" pattern="^[A-Za-z]([A-Za-z0-9\.]*)" placeholder="Enter property name" required/>
+    <h5>Value</h5>
+    <input name="value" type="text" placeholder="Enter property value"/>
+    <nav>
+      <button name="cancel">Cancel</button>
+      <button name="ok" secondary>OK</button>
+    </nav>
+  </dialog>
+
+  <dialog name="set">
+    <h1>Set property</h1>
+    <h5>Value</h5>
+    <input name="value" type="text" placeholder="Enter property value"/>
+    <nav>
+      <button name="cancel">Cancel</button>
+      <button name="ok" secondary>OK</button>
+    </nav>
+  </dialog>
+
+  <dialog name="definition">
+    <h1>Node definition</h1>
+    <textarea name="value" rows="24" placeholder="Enter node definition"></textarea>
+    <nav>
+      <button name="cancel">Cancel</button>
+      <button name="ok" secondary>Publish</button>
+    </nav>
+  </dialog>
+
+  <dialog name="confirm">
+    <h1>Confirm</h1>
+    <p>Are you sure?</p>
+    <nav>
+      <button name="no">No</button>
+      <button name="yes" secondary>Yes</button>
+    </nav>
+  </dialog>
+</body>
+</html>

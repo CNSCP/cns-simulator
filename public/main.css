@@ -1,0 +1,600 @@
+/* main.css - Main stylesheet */
+/* Copyright 2023 Padi, Inc. All Rights Reserved. */
+
+@charset "utf-8";
+
+@import url(//fonts.googleapis.com/css?family=Roboto:regular,light|Roboto+Mono&display=swap);
+
+html, body {
+  position: fixed;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: "Roboto", "Helvetica", sans-serif;
+  font-weight: 200;
+  font-size: 14px;
+  color: #848484;
+  margin: 0;
+}
+
+h1 {
+  font-size: 20px;
+  font-weight: 200;
+  color: #181818;
+  line-height: 28px;
+  margin: 0 0 16px 0;
+}
+
+h2 {
+  font-size: 17px;
+  font-weight: 200;
+  line-height: 20px;
+  margin: 0 0 16px 0;
+}
+
+h3 {
+  font-size: 16px;
+  font-weight: 200;
+  line-height: 20px;
+  margin: 0 0 16px 0;
+}
+
+h4 {
+  font-size: 17px;
+  font-weight: 200;
+  line-height: 20px;
+  margin: -16px 0 16px 0;
+}
+
+h5 {
+  font-size: 12px;
+  font-weight: 400;
+  color: #2196f3;
+  line-height: 15px;
+  margin: 10px 0 0 0;
+}
+
+hr {
+  clear: both;
+  border: none;
+  border-top: 1px solid #e5e5e5;
+  margin: 0 -16px 16px -16px;
+}
+
+p {
+  font-size: 15px;
+  line-height: 20px;
+  margin: 0 0 16px 0;
+}
+
+q, blockquote {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+pre {
+  font-family: "Roboto Mono", monospace;
+  margin: 0 0 16px 0;
+}
+
+ul, ol {
+  margin: 0 0 16px 0;
+  padding: 0 16px 0 32px;
+}
+
+ul li,
+ol li {
+  line-height: 18px;
+  margin: 10px 0 0 0;
+}
+
+a {
+  font-weight: 400;
+  color: #2196f3;
+  outline: none;
+}
+
+nav {
+  font-size: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+  text-align: right;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 16px;
+  height: 61px;
+}
+
+nav h1 {
+  float: left;
+  margin-right: 16px;
+}
+
+nav a {
+  font-size: 14px;
+  font-weight: 600;
+  position: relative;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: black;
+  line-height: 30px;
+  padding: 24px 16px;
+  opacity: 0.5;
+  -webkit-user-drag: none;
+  -moz-user-drag: none;
+  user-drag: none;
+}
+
+nav a:focus,
+nav a:hover,
+nav a[selected] {
+  opacity: 1;
+}
+
+nav a:after {
+  content: '';
+  position: absolute;
+  background-color: transparent;
+  left: 50%;
+  bottom: 3px;
+  width: 0;
+  height: 3px;
+}
+
+nav a[selected]:after {
+  background-color: #2196f3;
+  left: 0;
+  width: 100%;
+}
+
+section {
+  overflow: auto;
+  padding: 16px;
+  height: calc(100% - 93px);
+}
+
+center {
+  display: table;
+  width: 100%;
+  height:100%;
+}
+
+center div {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
+mark {
+  font-size: 0;
+  display: inline-block;
+  background-color: #dedede;
+  white-space: nowrap;
+  color: #181818;
+  border-radius: 16px;
+  padding: 0 12px;
+  margin: 2px 0;
+  line-height: 32px;
+  height: 32px;
+}
+
+mark[secondary] {
+  background-color: #2196f3;
+  color: white;
+}
+
+mark[primary] {
+  background-color: #ff4081;
+  color: white;
+}
+
+mark span {
+  font-size: 14px;
+  font-weight: 400;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+table {
+  border: 1px solid #e5e5e5;
+  border-collapse: collapse;
+  max-width: 700px;
+}
+
+table tr {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+table th {
+  font-size: 14px;
+  font-weight: 400;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: left;
+  vertical-align: top;
+  padding: 15px 18px;
+}
+
+table td {
+  font-size: 13px;
+  vertical-align: top;
+  padding: 15px 18px;
+}
+
+table td:nth-child(1) {
+  white-space: nowrap;
+}
+
+table td:nth-child(2) {
+  width: 100%;
+}
+
+table th:first-of-type,
+table td:first-of-type,
+table td:first-of-type li {
+  padding-left: 24px;
+}
+
+table[grid] {
+  table-layout: fixed;
+  max-width: none;
+  width: 100%;
+  height: 100%;
+}
+
+table[grid] th {
+  position: relative;
+  padding-right: 32px;
+}
+
+table[grid] th nav {
+  border: none;
+  padding: 0;
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  height: 40px;
+}
+
+table[grid] th button[icon] {
+  position: absolute;
+  top: 10px;
+  right: 4px;
+}
+
+table[grid] td {
+  border-right: 1px solid #e5e5e5;
+  padding: 0;
+  width: 100%;
+  height: calc(100vh - 143px);
+}
+
+table[grid] ul,
+table[grid] ol {
+  overflow: auto;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+table[grid] ol li {
+  line-height: 34px;
+}
+
+table[grid] li {
+  position: relative;
+  margin: 0;
+  padding: 0 34px 0 18px;
+}
+
+table[grid] li span {
+  display: inline-block;
+  background-color: #808080;
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 20px;
+  margin-right: 8px;
+  width: 20px;
+  height: 20px;
+}
+
+table[grid] li p {
+  font-size: 14px;
+  margin: 0 0 10px 0;
+  min-height: 20px;
+}
+
+table[grid] li b {
+  color: #ff5252;
+}
+
+table[grid] li i {
+  font-weight: bold;
+  margin-left: 8px;
+}
+
+table[grid] li,
+table[grid] li h5,
+table[grid] li p,
+table[grid] li b {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+table[grid] li h5,
+table[grid] li span,
+table[grid] li p,
+table[grid] li b,
+table[grid] li i {
+  pointer-events: none;
+}
+
+table[grid] li:hover {
+  background-color: #f8f8f8;
+}
+
+table[grid] li[selected] {
+  background-color: #f0f8ff;
+}
+
+table[grid] li button[icon] {
+  font-size: 18px;
+  display: none;
+  position: absolute;
+  top: 3px;
+  right: 3px;
+}
+
+table[grid] ul li button[icon] {
+  top: 14px;
+}
+
+table[grid] li:hover button[icon] {
+  display: inline;
+}
+
+input {
+  font-family: "Roboto", "Helvetica", sans-serif;
+  font-size: 15px;
+  font-weight: 200;
+  border: none;
+  outline: none;
+  line-height: 24px;
+  margin: 0;
+  padding: 0;
+}
+
+input[type="text"] {
+  border-bottom: 2px solid #efefef;
+}
+
+input[type="text"]:focus {
+  border-bottom: 2px solid #2196f3;
+}
+
+input[type="text"]:invalid {
+  border-bottom: 2px solid #ff5252;
+}
+
+textarea {
+  font-family: "Roboto Mono", monospace;
+  font-size: 13px;
+  font-weight: 200;
+  border: none;
+  outline: none;
+  margin: 0;
+  padding: 0;
+}
+
+::placeholder {
+  text-transform: none;
+  color: #cccccc;
+  opacity: 1;
+}
+
+button {
+  font-family: "Roboto", "Helvetica", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  outline: none;
+  background-color: transparent;
+  color: #181818;
+  border: none;
+  border-radius: 2px;
+  text-transform: uppercase;
+  padding: 10px 16px;
+  line-height: 16px;
+  height: 36px;
+}
+
+button[icon] {
+  font-size: 22px;
+  color: #2196f3;
+  padding: 0;
+  line-height: 28px;
+  width: 28px;
+  height: 28px;
+}
+
+button[secondary] {
+  color: #2196f3;
+}
+
+button[primary] {
+  color: #ff4081;
+}
+
+button:hover {
+  background-color: rgba(158, 158, 158, 0.2);
+}
+
+button[raised] {
+  background-color: rgba(158, 158, 158, 0.2);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+button:active {
+  background-color: rgba(158, 158, 158, 0.4);
+}
+
+button[raised][secondary] {
+  background-color: #2196f3;
+  color: white;
+}
+
+button[raised][primary] {
+  background-color: #ff4081;
+  color: white;
+}
+
+button[raised]:active,
+button[raised]:focus {
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+button[disabled] {
+  color: rgba(0, 0, 0, 0.26);
+}
+
+button[raised][disabled] {
+  background-color: rgba(0, 0, 0, 0.12);
+  box-shadow: none;
+}
+
+.blocker {
+  background-color: rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+dialog {
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 0 40px #a8a8a8;
+  color: #181818;
+  padding: 16px;
+}
+
+dialog[active] {
+  background-color: white;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+dialog h1 {
+  border-bottom: 1px solid #e5e5e5;
+  margin: -16px -16px 16px -16px;
+  padding: 16px;
+}
+
+dialog p {
+  margin: 32px;
+}
+
+dialog input[type="text"] {
+  margin-bottom: 16px;
+  width: 368px;
+}
+
+dialog input[type="radio"],
+dialog input[type="checkbox"] {
+  margin: 8px 0 16px 4px;
+}
+
+dialog textarea {
+  display: block;
+  resize: both;
+  margin: -16px -16px 0 -16px;
+  border-left: 16px solid #f8f8f8;
+  min-width: 468px;
+  min-height: 168px;
+}
+
+dialog label {
+  margin-right: 12px;
+  padding-left: 8px;
+}
+
+dialog nav {
+  border-top: 1px solid #e5e5e5;
+  border-bottom: none;
+  margin: 0 -16px -16px -16px;
+  padding: 12px;
+  height: auto;
+}
+
+dialog input[name="context"],
+dialog input[name="name"] {
+  text-transform: lowercase;
+}
+
+#environment {
+  text-transform: capitalize;
+}
+
+section[name="import"] textarea,
+section[name="export"] textarea {
+  resize: none;
+  border-left: 24px solid #f8f8f8;
+  width: calc(100% - 24px);
+  height: 100%;
+}
+
+/* Anti-selection */
+
+nav,
+mark,
+table th,
+table[grid],
+.blocker,
+dialog,
+button,
+label {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+/* Animation */
+
+input {
+  transition: border-color 0.25s;
+}
+
+button {
+  transition: background-color 0.25s;
+}
+
+nav a:after {
+  transition: left 0.25s, width 0.25s, background-color 0.25s;
+}
+
+[ripple] {
+  background-image: radial-gradient(circle, transparent 1%, #2196f310 1%);
+  background-size: 15000%;
+  background-position: center;
+  transition: opacity 0.2s, background-color 0.5s, background-size 0.5s;
+}
+
+[ripple]:active {
+  background-color: #2196f310;
+  background-size: 50%;
+  transition: opacity 0.2s, background-color 0.15s, background-size 0.15s;
+}
+
+[hidden] {
+  display: none;
+}

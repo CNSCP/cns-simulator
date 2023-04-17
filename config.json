@@ -1,0 +1,44 @@
+{
+  "name": "config",
+  "description": "CNS Simulator Config",
+  "environments": [
+    "production",
+    "staging"
+  ],
+  "services": [
+    "identity",
+    "nodes",
+    "connections",
+    "messages",
+    "server"
+  ],
+  "identity": {
+    "persist": "identity.json"
+  },
+  "profiles": {
+    "host": "cp.padi.io",
+    "path": "/profiles"
+  },
+  "messages": {
+    "module": "mqtt",
+    "protocol": "ws",
+    "host": "localhost",
+    "port": "1881",
+    "user": "guest",
+    "pass": "cnscp",
+    "root": "cns",
+    "subscribe": {
+      "qos": 0,
+      "rap": true
+    },
+    "publish": {
+      "retain": true
+    }
+  },
+  "server": {
+    "host": "localhost",
+    "port": "8080",
+    "public": "public",
+    "compress": "gzip"
+  }
+}
