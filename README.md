@@ -39,10 +39,6 @@ npm run start
 
 To shut down the application, hit `ctrl-c`.
 
-You can change settings from inside of [config.json](./config.json).
-The identity of the simulator is held in [identity.json](./identity.json).
-The information published to the broker is held in [persist.json](./persist.json).
-
 ## Maintainers
 
 This project contains two environments, one for Staging (development) and one for Production. It is recommended to push changes to Staging, test those changes, then deploy them to Production.

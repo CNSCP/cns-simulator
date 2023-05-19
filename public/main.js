@@ -42,12 +42,14 @@ function initialize() {
   $$('section[name="nodes"] ol').forEach((e) => listen(e, 'click', select));
   $$('section[name="nodes"] ul').forEach((e) => listen(e, 'click', select));
 
+  listen('section[name="import"] button[name="publish"]', 'click', paste);
+  listen('section[name="export"] button[name="copy"]', 'click', copy);
+
   listen('#contexts', 'dblclick', definition);
   listen('#nodes', 'dblclick', definition);
   listen('#profiles', 'dblclick', open);
   listen('#connections', 'dblclick', view);
 
-  listen('dialog[name="context"] button[name="ok"]', 'click', context);
   listen('dialog[name="node"] button[name="ok"]', 'click', node);
   listen('dialog[name="property"] button[name="ok"]', 'click', attach);
   listen('dialog[name="profile"] button[name="ok"]', 'click', profile);
@@ -64,24 +66,19 @@ function initialize() {
 function status() {
   text('#version', config.version);
   text('#environment', config.environment);
+  text('#host1', getUrl(config.profiles));
+  text('#host2', getUrl(config.broker));
   text('#started', config.started);
   text('#used', config.used);
-  text('#broker', config.host);
-  text('#identifier', config.ident);
+  text('#status', config.status);
 }
 
 // Connect to broker
 function connect() {
   // Construct server uri
-  const prot = config.protocol;
-  const host = config.host;
-  const port = ':' + config.port;
+  const uri = getUrl(config.broker, config.broker);
 
-  const uri = prot + '://' + getAuth() + host + port;
-
-  debug('<> messages on ' + host + port);
-  debug('<> messages root ' + getTopic());
-
+  debug('++ messages ' + config.broker.host + '/' + getTopic());
   debug('connecting...');
 
   var attempts = 0;
@@ -103,7 +100,9 @@ function connect() {
     .on('message', (topic, message) => {
       // Get id from topic
       const id = getId(topic);
-      debug('>> messages pub ' + id);
+      if (id === null) return;
+
+      debug('>> messages pub ' + topic);
 
       // Remove topic?
       if (message.length === 0)
@@ -147,20 +146,20 @@ function connect() {
 // Subscribe to topic
 function subscribe(id) {
   const topic = getTopic(id);
-  debug('<< messages sub ' + id);
+  debug('<< messages sub ' + topic);
 
-  client.subscribe(topic, config.subscribe);
+  client.subscribe(topic, config.broker.subscribe);
 }
 
 // Publish to topic
 function publish(id, node) {
   const topic = getTopic(id);
-  debug('<< messages pub ' + id);
+  debug('<< messages pub ' + topic);
 
   const message = (node !== undefined)?stringify(node):'';
   if (message === undefined) return;
 
-  client.publish(topic, message, config.publish);
+  client.publish(topic, message, config.broker.publish);
 }
 
 // Reconnecting client
@@ -177,10 +176,20 @@ function reconnect() {
   }, TIMEOUT);
 }
 
+// Get server url
+function getUrl(options, auth) {
+  return options.protocol + '://' +
+    getAuth(auth) + options.host +
+    (options.port?(':' + options.port):'') +
+    (options.path || '');
+}
+
 // Get server auth
-function getAuth() {
-  const user = config.user;
-  const pass = config.pass;
+function getAuth(options) {
+  if (options === undefined) return '';
+
+  const user = options.user;
+  const pass = options.pass;
 
   if (user === undefined) return '';
   if (pass === undefined) return user + '@';
@@ -192,12 +201,10 @@ function getAuth() {
 function getTopic(id) {
   const path = [];
 
-  const root = config.root || '';
-  const ident = config.ident || '';
+  const root = config.broker.root || '';
   const name = id || '';
 
   if (root !== '') path.push(root);
-  if (ident !== '') path.push(ident);
   if (name !== '') path.push(name);
 
   return path.join('/');
@@ -206,12 +213,12 @@ function getTopic(id) {
 // Get id from topic
 function getId(topic) {
   const path = topic.split('/');
+  const root = config.broker.root || '';
 
-  const root = config.root || '';
-  const ident = config.ident || '';
-
-  if (root !== '') path.shift();
-  if (ident !== '') path.shift();
+  // Must be root/context/node
+  if ((root !== '' && root !== path.shift()) ||
+    path.length !== 2)
+    return null;
 
   return path.join('/');
 }
@@ -518,8 +525,12 @@ function properties(properties, attr, hide, lock) {
 
   for (const name in properties) {
     if (hide === undefined || !hide.includes(name)) {
+      const v = properties[name];
+
+      const value = '<p>' + ((v === '')?'<b>not set</b>':v) + '</p>';
       const remove = (lock === undefined || lock.includes(name))?'':'<button icon>&#x2715;</button>';
-      list += '<li' + (attr || '') + ' property="' + name + '"><h5>' + name + '</h5><p>' + properties[name] + '</p>' + remove + '</li>';
+
+      list += '<li' + (attr || '') + ' property="' + name + '"><h5>' + name + '</h5>' + value + remove + '</li>';
     }
   }
   return list;
@@ -627,6 +638,26 @@ function select(e) {
   }
 }
 
+// Inport from edit
+function paste() {
+  // Parse import text
+  const e = $('section[name="import"] textarea');
+
+  const nodes = parse(value(e));
+  if (nodes === undefined) return;
+
+  // Publish nodes
+  for (const topic in node)
+    publish(topic, node[topic]);
+
+  value(e, '');
+}
+
+// Copy export to clipboard
+function copy() {
+  navigator.clipboard.writeText(text('section[name="export"] textarea'));
+}
+
 // Get type for selection
 function typeFor(item) {
   if (item.profile !== null) return 'profile';
@@ -638,19 +669,27 @@ function typeFor(item) {
 
 // Add dialog
 function add(e) {
-  $$('input[type="text"]').forEach((e) => value(e, ''));
+  $$('dialog input[type="text"]').forEach((e) => value(e, ''));
   radio('profile', 'role', 'server');
 
-  dialog(attribute(e.target, 'add'));
+  const add = attribute(e.target, 'add');
+
+  if (add === 'node')
+    input('node', 'context', selection.context);
+
+  dialog((add === 'context')?'node':add);
+
+  if (add === 'node')
+    focus(field('node', 'name'));
 }
 
-// Add context
-function context() {
+// Add node
+function node() {
   // Get dialog fields
-  var comment = input('context', 'comment');
-  var title = input('context', 'title');
-  var name = input('context', 'name');
-  var context = input('context', 'context');
+  var comment = input('node', 'comment');
+  var title = input('node', 'title');
+  var name = input('node', 'name');
+  var context = input('node', 'context');
 
   // Valid fields?
   if (context === null ||
@@ -663,60 +702,9 @@ function context() {
   name = name.toLowerCase();
 
   // Close dialog
-  close('context');
-
-  // Select context
-  const item = $('#contexts li[context="' + context + '"]');
-
-  if (item !== null)
-    select({target: item});
-
-  // Node exists?
-  const topic = context + '/' + name;
-  const element = $('#nodes li[topic="' + topic + '"]');
-
-  if (element !== null) {
-    // Select node
-    select({target: element});
-    return;
-  }
-
-  // Publish node
-  publish(topic, {
-    context: context,
-    name: name,
-    title: title,
-    comment: comment
-  });
-
-  // Ready selection
-  setSelection(
-    topic,
-    context,
-    name);
-}
-
-// Add node
-function node() {
-  // Get dialog fields
-  var comment = input('node', 'comment');
-  var title = input('node', 'title');
-  var name = input('node', 'name');
-
-  // Valid fields?
-  if (name === null ||
-    title === null ||
-    comment === null) return;
-
-  // Adjust fields
-  name = name.toLowerCase();
-
-  // Close dialog
   close('node');
 
   // Node exists?
-  const context = selection.context;
-
   const topic = context + '/' + name;
   const element = $('#nodes li[topic="' + topic + '"]');
 
@@ -1039,7 +1027,8 @@ function open(e) {
   if (selection === undefined ||
     selection.profile === null) return;
 
-  window.open(config.profiles + '/' + selection.profile);
+  const url = getUrl(config.profiles);
+  window.open(url + '/' + selection.profile);
 }
 
 // View connection item

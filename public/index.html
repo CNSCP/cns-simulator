@@ -31,11 +31,11 @@
     <table>
       <tr><th>Version</th><td id="version"></td></tr>
       <tr><th>Environment</th><td id="environment"></td></tr>
+      <tr><th>Profiles</th><td id="host1"></td></tr>
+      <tr><th>Broker</th><td id="host2"></td></tr>
       <tr><th>Started</th><td id="started"></td></tr>
       <tr><th>Used</th><td id="used"></td></tr>
-      <tr><th>Broker</th><td id="broker"></td></tr>
-      <tr><th>Identifier</th><td id="identifier"></td></tr>
-      <tr><th>Status</th><td>Running</td></tr>
+      <tr><th>Status</th><td id="status"></td></tr>
     </table>
   </section>
 
@@ -67,38 +67,24 @@
 
   <section hidden name="import">
     <table grid>
-    <tr><th>Import<nav><button name="import" secondary>Publish</button></nav></th></tr>
+    <tr><th>Import<nav><button name="publish" secondary>Publish</button></nav></th></tr>
     <tr><td><textarea></textarea></td></tr>
     </table>
   </section>
 
   <section hidden name="export">
     <table grid>
-    <tr><th>Export</th></tr>
-    <tr><td><textarea></textarea></td></tr>
+    <tr><th>Export<nav><button name="copy" secondary>Copy</button></nav></th></tr>
+    <tr><td><textarea readonly></textarea></td></tr>
     </table>
   </section>
 
   <div hidden class="blocker"></div>
 
-  <dialog name="context">
-    <h1>Add context</h1>
-    <h5>Context</h5>
-    <input name="context" type="text" pattern="[a-zA-Z0-9]+" placeholder="Enter context name" required/>
-    <h5>Name</h5>
-    <input name="name" type="text" pattern="[a-zA-Z0-9]+" placeholder="Enter node name" required/>
-    <h5>Title</h5>
-    <input name="title" type="text" placeholder="Enter node title"/>
-    <h5>Comment</h5>
-    <input name="comment" type="text" placeholder="Enter node comment"/>
-    <nav>
-      <button name="cancel">Cancel</button>
-      <button name="ok" secondary>OK</button>
-    </nav>
-  </dialog>
-
   <dialog name="node">
     <h1>Add node</h1>
+    <h5>Context</h5>
+    <input name="context" type="text" pattern="[a-zA-Z0-9]+" placeholder="Enter context name" required/>
     <h5>Name</h5>
     <input name="name" type="text" pattern="[a-zA-Z0-9]+" placeholder="Enter node name" required/>
     <h5>Title</h5>

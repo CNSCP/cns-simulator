@@ -19,9 +19,9 @@
         "name": "acme.monitor",
         "server": "utility/monitor",
         "properties": {
-          "electric": "4W",
-          "gas": "6m&sup3;",
-          "water": "2m&sup3;"
+          "electric": "13W",
+          "gas": "0.59m&sup3;",
+          "water": "0.08m&sup3;"
         }
       },
       {
@@ -29,7 +29,7 @@
         "server": "utility/monitor",
         "properties": {
           "title": "Total consumption",
-          "values": "4, 6, 2",
+          "values": "13, 0.59, 0.08",
           "colours": "red, green, blue",
           "labels": "Electric (W), Gas (m&sup3;), Water (m&sup3;)"
         }
@@ -47,7 +47,7 @@
         "server": "utility/monitor",
         "properties": {
           "title": "Total consumption",
-          "values": "4, 6, 2",
+          "values": "13, 0.59, 0.08",
           "colours": "red, green, blue",
           "labels": "Electric (W), Gas (m&sup3;), Water (m&sup3;)"
         }
@@ -56,9 +56,9 @@
         "name": "acme.monitor",
         "server": "utility/monitor",
         "properties": {
-          "electric": "4W",
-          "gas": "6m&sup3;",
-          "water": "2m&sup3;"
+          "electric": "13W",
+          "gas": "0.59m&sup3;",
+          "water": "0.08m&sup3;"
         }
       },
       {
@@ -73,7 +73,7 @@
           "point": "AI5",
           "period": "1s",
           "units": "W",
-          "value": 4
+          "value": 13
         }
       },
       {
@@ -83,7 +83,7 @@
           "point": "AI9",
           "period": "1s",
           "units": "m&sup3;",
-          "value": 6
+          "value": 0.59
         }
       },
       {
@@ -93,7 +93,7 @@
           "point": "AI3",
           "period": "1s",
           "units": "m&sup3;",
-          "value": 2
+          "value": 0.08
         }
       },
       {
@@ -121,7 +121,7 @@
           "point": "AI5",
           "period": "1s",
           "units": "W",
-          "value": 4
+          "value": 13
         }
       },
       {
@@ -144,7 +144,7 @@
           "point": "AI9",
           "period": "1s",
           "units": "m&sup3;",
-          "value": 6
+          "value": 0.59
         }
       },
       {
@@ -167,7 +167,7 @@
           "point": "AI3",
           "period": "1s",
           "units": "m&sup3;",
-          "value": 2
+          "value": 0.08
         }
       },
       {

@@ -27,8 +27,6 @@ var config;
 var app;
 var server;
 
-var identity;
-
 var started = date.now();
 var used = date.now();
 
@@ -82,16 +80,6 @@ function init(service, section) {
   });
 }
 
-// Start service
-function start() {
-  // I promise to
-  return new Promise((resolve, reject) => {
-    // Get services
-    identity = master.find('identity');
-    resolve();
-  });
-}
-
 // Run service
 function run() {
   // I promise to
@@ -134,8 +122,6 @@ function exit() {
     app = undefined;
     server = undefined;
 
-    identity = undefined;
-
     debug('-- server service');
     resolve();
   });
@@ -144,40 +130,32 @@ function exit() {
 // Get configuration
 function getConfig(req, res) {
   // Get config
-  const ident = identity.getIdentifier();
-
   const messages = master.config.messages;
   const profiles = master.config.profiles;
-
-  const prot = messages.protocol || 'ws';
-  const host = messages.host || 'localhost';
-  const port = messages.proxy || messages.port || '1881';
-
-  const user = messages.user || '';
-  const pass = messages.pass || '';
-  const root = messages.root || '';
-
-  const subscribe = messages.subscribe || {};
-  const publish = messages.publish || {};
-
-  const uri = 'https://' + profiles.host + (profiles.path || '');
 
   response(res, 200, 'const config = ' +
     stringify({
       version: master.version(),
       environment: master.environment(),
+      profiles: {
+        protocol: profiles.protocol || 'http',
+        host: profiles.host || 'localhost',
+        port: profiles.port || '',
+        path: profiles.path || '/profiles'
+      },
+      broker: {
+        protocol: messages.protocol || 'ws',
+        host: messages.host || 'localhost',
+        port: messages.port || '1881',
+        user: messages.user || '',
+        pass: messages.pass || '',
+        root: messages.root || '',
+        subscribe: messages.subscribe || {},
+        publish: messages.publish || {}
+      },
       started: date.toDateTime(started),
       used: date.toTimeAgo(used),
-      protocol: prot,
-      host: host,
-      port: port,
-      user: user,
-      pass: pass,
-      root: root,
-      ident: ident,
-      subscribe: subscribe,
-      publish: publish,
-      profiles: uri
+      status: 'running'
     }) +
   ';', JS);
 }
@@ -274,7 +252,6 @@ function error(text) {
 // Exports
 
 exports.init = init;
-exports.start = start;
 exports.run = run;
 exports.term = term;
 exports.exit = exit;

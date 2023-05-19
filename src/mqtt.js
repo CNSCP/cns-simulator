@@ -12,10 +12,7 @@ const mqtt = require('mqtt');
 var master;
 var config;
 
-var identity;
 var nodes;
-var connections;
-
 var client;
 
 var terminating;
@@ -40,10 +37,7 @@ function start() {
   // I promise to
   return new Promise((resolve, reject) => {
     // Get services
-    identity = master.find('identity');
     nodes = master.find('nodes');
-    connections = master.find('connections');
-
     resolve();
   });
 }
@@ -53,9 +47,9 @@ function run() {
   // I promise to
   return new Promise((resolve, reject) => {
     // Construct server uri
-    const prot = config.protocol || 'mqtt';
-    const host = config.host;
-    const port = (config.port === undefined)?'':(':' + config.port);
+    const prot = config.protocol || 'ws';
+    const host = config.host || 'localhost';
+    const port = config.port?(':' + config.port):'';
 
     const uri = prot + '://' + getAuth() + host + port;
 
@@ -92,24 +86,24 @@ function run() {
 
       // Get id from topic
       const id = getId(topic);
+      if (id === null) return;
 
       // Remove topic?
       if (message.length === 0) {
-        debug('>> messages remove ' + id);
+        debug('>> messages remove ' + topic);
         nodes.setNode(id);
         return;
       }
 
-      debug('>> messages pub ' + id);
+      // Client publish
+      debug('>> messages pub ' + topic);
 
-      // Set node
+      // Failed to parse?
       const node = parse(message);
       if (node === null) return;
 
+      // Set node
       nodes.setNode(id, node);
-
-      // Node changed
-      changed(id, node);
     })
     // Failure
     .on('error', (e) => {
@@ -143,10 +137,7 @@ function exit() {
   // I promise to
   return new Promise((resolve, reject) => {
     // Destroy objects
-    identity = undefined;
     nodes = undefined;
-    connections = undefined;
-
     client = undefined;
 
     debug('-- messages service');
@@ -165,57 +156,6 @@ function getAuth() {
   return user + ':' + pass + '@';
 }
 
-// Node has changed
-function changed(id, node) {
-  // Has profiles?
-  const scan = node.profiles;
-  if (scan === undefined) return;
-
-  // What can it handle?
-  var servers = {};
-  var clients = {};
-
-  for (const profile of scan) {
-    const name = profile.name;
-
-    if (name !== undefined) {
-      const server = profile.server;
-      const client = profile.client;
-
-      if (server === id) servers[name] = profile;
-      if (client === id) clients[name] = profile;
-    }
-  }
-
-  // Handle connections
-  for (const profile of scan) {
-    const name = profile.name;
-
-    if (name !== undefined) {
-      const server = profile.server;
-      const client = profile.client;
-
-      // Handle client connection
-      if (server !== undefined && server !== id) {
-        const c = clients[name];
-        const s = profile;
-
-        if (c !== undefined)
-          connections.client(id, node, c, s);
-      }
-
-      // Handle server connection
-      if (client !== undefined && client !== id) {
-        const s = servers[name];
-        const c = profile;
-
-        if (s !== undefined)
-          connections.server(id, node, s, c);
-      }
-    }
-  }
-}
-
 // Publish all nodes
 function publishAll() {
   const items = nodes.getNodes();
@@ -227,7 +167,7 @@ function publishAll() {
 // Subscribe to node
 function subscribe(id) {
   const topic = getTopic(id);
-  debug('<< messages sub ' + id);
+  debug('<< messages sub ' + topic);
 
   client.subscribe(topic, config.subscribe, (e) => {
     if (e) error('subscribe error: ' + e.message);
@@ -237,7 +177,7 @@ function subscribe(id) {
 // Unsubscribe to node
 function unsubscribe(id) {
   const topic = getTopic(id);
-  debug('<< messages unsub ' + id);
+  debug('<< messages unsub ' + topic);
 
   client.unsubscribe(topic, (e) => {
     if (e) error('unsubscribe error: ' + e.message);
@@ -247,7 +187,7 @@ function unsubscribe(id) {
 // Publish node
 function publish(id, node) {
   const topic = getTopic(id);
-  debug('<< messages pub ' + id);
+  debug('<< messages pub ' + topic);
 
   const message = (node !== undefined)?stringify(node):'';
   if (message === null) return;
@@ -262,11 +202,9 @@ function getTopic(id) {
   const path = [];
 
   const root = config.root || '';
-  const ident = identity.getIdentifier();
   const name = id || '';
 
   if (root !== '') path.push(root);
-  if (ident !== '') path.push(ident);
   if (name !== '') path.push(name);
 
   return path.join('/');
@@ -275,12 +213,12 @@ function getTopic(id) {
 // Get id from topic
 function getId(topic) {
   const path = topic.split('/');
-
   const root = config.root || '';
-  const ident = identity.getIdentifier();
 
-  if (root !== '') path.shift();
-  if (ident !== '') path.shift();
+  // Must be root/context/node
+  if ((root !== '' && root !== path.shift()) ||
+    path.length !== 2)
+    return null;
 
   return path.join('/');
 }

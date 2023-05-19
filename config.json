@@ -6,16 +6,12 @@
     "staging"
   ],
   "services": [
-    "identity",
     "nodes",
-    "connections",
     "messages",
     "server"
   ],
-  "identity": {
-    "persist": "identity.json"
-  },
   "profiles": {
+    "protocol": "https",
     "host": "cp.padi.io",
     "path": "/profiles"
   },

@@ -209,14 +209,14 @@ table tr {
 }
 
 table th {
-  font-size: 14px;
-  font-weight: 400;
+  font-size: 12px;
+  font-weight: 600;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   text-align: left;
   vertical-align: top;
-  padding: 15px 18px;
+  padding: 16px 18px;
 }
 
 table td {
@@ -247,8 +247,14 @@ table[grid] {
 }
 
 table[grid] th {
+  font-size: 16px;
+  font-weight: 200;
   position: relative;
-  padding-right: 32px;
+  padding: 14px 32px 14px 18px;
+}
+
+table[grid] th:first-of-type {
+  padding-left: 24px;
 }
 
 table[grid] th nav {
@@ -540,16 +546,17 @@ dialog input[name="name"] {
   text-transform: lowercase;
 }
 
-#environment {
-  text-transform: capitalize;
-}
-
 section[name="import"] textarea,
 section[name="export"] textarea {
   resize: none;
   border-left: 24px solid #f8f8f8;
   width: calc(100% - 24px);
   height: 100%;
+}
+
+#environment,
+#status {
+  text-transform: capitalize;
 }
 
 /* Anti-selection */
