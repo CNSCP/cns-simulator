@@ -17,9 +17,9 @@
   },
   "messages": {
     "module": "mqtt",
-    "protocol": "ws",
-    "host": "localhost",
-    "port": "1881",
+    "protocol": "wss",
+    "host": "broker01.test.cns.dev",
+    "port": "1883",
     "user": "guest",
     "pass": "cnscp",
     "root": "cns",
@@ -32,7 +32,7 @@
     }
   },
   "server": {
-    "host": "localhost",
+    "host": "0.0.0.0",
     "port": "8080",
     "public": "public",
     "compress": "gzip"
