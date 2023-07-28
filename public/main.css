@@ -346,6 +346,21 @@ table[grid] li:hover {
   background-color: #f8f8f8;
 }
 
+table[grid] li[proxy],
+table[grid] li[proxy] h5 {
+  color: #b121f3;
+}
+
+table[grid] li[proxy] span {
+  background-color: #b121f3;
+}
+
+/*
+table[grid] li[proxy] button {
+  display: none !important;
+}
+*/
+
 table[grid] li[selected] {
   background-color: #f0f8ff;
 }

@@ -1,7 +1,7 @@
 {
-  "name": "cns-broker",
-  "version": "0.1.7",
-  "description": "CNS Broker",
+  "name": "cns-simulator",
+  "version": "0.1.8",
+  "description": "CNS Simulator",
   "author": "Padi, Inc",
   "license": "ISC",
   "main": "index.js",

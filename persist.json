@@ -220,5 +220,83 @@
         }
       }
     ]
+  },
+  "padi/data": {
+    "context": "padi",
+    "name": "data",
+    "title": "Data",
+    "comment": "Proxy",
+    "proxy": "wss://eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJwYWRpLWFwcCIsImlzcyI6ImVRRXVUZWwxeXBkSTkwSkhZUHJmIiwic3ViIjoiSXJYbnBGU1B3ZGVvMHJBOUhqS3AiLCJpYXQiOjE2OTA0NjUzNTh9.uZFjeP7qBSRaKGw79hX9_NDWekmnE14UHKFnhXmEYEQ@cns.padi.io:1881#thing/IrXnpFSPwdeo0rA9HjKp",
+    "profiles": [
+      {
+        "name": "padi.dataset",
+        "client": "padi/snoop"
+      },
+      {
+        "proxy": "9oLfyzMrV8VP6HOxkIOL",
+        "name": "padi.dataset",
+        "server": "padi/data",
+        "properties": {
+          "title": "Data",
+          "values": "6,6,6",
+          "colours": "red,green,blue",
+          "labels": "A,B,C"
+        }
+      },
+      {
+        "proxy": "9oLfyzMrV8VP6HOxkIOL",
+        "ignore": true,
+        "name": "padi.dataset",
+        "client": "9oLfyzMrV8VP6HOxkIOL"
+      }
+    ]
+  },
+  "padi/chart": {
+    "context": "padi",
+    "name": "chart",
+    "title": "Chart",
+    "comment": "Proxy",
+    "proxy": "wss://eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJwYWRpLWFwcCIsImlzcyI6Imo2RDZ2aVNOcEtpVUxCNGFiRjZEIiwic3ViIjoiWFVTQnNwa1p5UmJPc2FscUZDeXAiLCJpYXQiOjE2OTA0ODYyNjN9.0KnmfoOnZi-Aa7jA65n4ktuwA4rE9sL8XIPR2NgZN0Q@cns.padi.io:1881#thing/XUSBspkZyRbOsalqFCyp",
+    "profiles": [
+      {
+        "proxy": "9oLfyzMrV8VP6HOxkIOL",
+        "name": "padi.dataset",
+        "client": "padi/chart"
+      },
+      {
+        "proxy": "9oLfyzMrV8VP6HOxkIOL",
+        "ignore": true,
+        "name": "padi.dataset",
+        "server": "9oLfyzMrV8VP6HOxkIOL",
+        "properties": {
+          "title": "Data",
+          "values": "6,6,6",
+          "colours": "red,green,blue",
+          "labels": "A,B,C"
+        }
+      }
+    ]
+  },
+  "padi/snoop": {
+    "context": "padi",
+    "name": "snoop",
+    "title": "Data snoop",
+    "comment": "Snoop on padi data",
+    "profiles": [
+      {
+        "name": "padi.dataset",
+        "client": "padi/snoop"
+      },
+      {
+        "name": "padi.dataset",
+        "server": "padi/data",
+        "properties": {
+          "title": "Data",
+          "values": "6,6,6",
+          "colours": "red,green,blue",
+          "labels": "A,B,C"
+        }
+      }
+    ]
   }
 }

@@ -265,6 +265,7 @@ function getOpposite(role) {
 // Get profile properties
 function getProperties(topic, name, role) {
   const profile = getProfile(topic, name, role);
+console.log(topic + ' ' + name + ' ' + role + ' = ', profile);
   return (profile === undefined)?{}:(profile.properties || {});
 }
 
@@ -338,27 +339,32 @@ function update() {
     // Add profiles
     for (const profile of scan) {
       // Get details
+      const proxy = profile.proxy;
       const name = profile.name;
       const version = profile.version;
       const role = getRole(profile);
-      const link = (role === 'server')?profile.server:profile.client;
+      var link = (role === 'server')?profile.server:profile.client;
 
       const badge = '<span>' + role[0].toUpperCase() + '</span>';
+      const p = (proxy === undefined)?'':' proxy';
 
       // Need or use?
       if (link === topic) {
         // Add profile
         const v = (version === undefined)?'':('<i>v' + version + '</i>');
-        const a = attr + ' profile="' + name + '" role="' + role + '"';
+        const a = attr + ' profile="' + name + '" role="' + role + '"' + p;
 
         profiles += '<li' + a + '>' + badge + name + v + remove + '</li>';
       } else {
         // Add connection
-        const data = getNode(link);
-        const opposite = getOpposite(role);
+        var n = link;
 
-        const n = (data === undefined)?('<b>' + link + '</b>'):data.name;
-        const a = attr + ' profile="' + name + '" role="' + opposite + '" connection="' + link + '"';
+        if (proxy === undefined) {
+          const data = getNode(link);
+          n = (data === undefined)?('<b>' + link + '</b>'):data.name;
+        } else link = topic;
+
+        const a = attr + ' profile="' + name + '" role="' + getOpposite(role) + '" connection="' + link + '"' + p;
 
         connections += '<li' + a + '>' + badge + n + '</li>';
       }
@@ -497,8 +503,12 @@ function filter() {
     text('#heading2', 'Server');
   }
 
+  // Is proxied?
+  const proxy = getProfile(topic, profile, role).proxy;
+  const p = (proxy === undefined)?'':' proxy';
+
   // Fill profile properties
-  attr += attr + ' profile="' + profile + '" role="' + role + '"';
+  attr += attr + ' profile="' + profile + '" role="' + role + '"' + p;
   html('#properties1', properties(getProperties(topic, profile, role), attr));
 
   // Select connection
@@ -515,7 +525,7 @@ function filter() {
   const link = connection.split('/')[1];
   const opposite = getOpposite(role);
 
-  attr = ' topic="' + connection + '" context="' + context + '" node="' + link + '" profile="' + profile + '" role="' + opposite + '"';
+  attr = ' topic="' + connection + '" context="' + context + '" node="' + link + '" profile="' + profile + '" role="' + opposite + '"' + p;
   html('#properties2', properties(getProperties(connection, profile, opposite), attr));
 }
 
@@ -526,11 +536,12 @@ function properties(properties, attr, hide, lock) {
   for (const name in properties) {
     if (hide === undefined || !hide.includes(name)) {
       const v = properties[name];
+      const p = (hide !== undefined && name === 'proxy')?' proxy':'';
 
       const value = '<p>' + ((v === '')?'<b>not set</b>':v) + '</p>';
       const remove = (lock === undefined || lock.includes(name))?'':'<button icon>&#x2715;</button>';
 
-      list += '<li' + (attr || '') + ' property="' + name + '"><h5>' + name + '</h5>' + value + remove + '</li>';
+      list += '<li' + (attr || '') + p + ' property="' + name + '"><h5>' + name + '</h5>' + value + remove + '</li>';
     }
   }
   return list;
@@ -1037,6 +1048,17 @@ function view(e) {
   if (selection === undefined ||
     selection.connection === null) return;
 
+  // Not proxied?
+  const element = $('#connections li' +
+    '[topic="' + selection.topic + '"]' +
+    '[profile="' + selection.profile + '"]' +
+    '[role="' + selection.role + '"]' +
+    '[connection="' + selection.connection + '"]');
+
+  if (element === null ||
+    attribute(element, 'proxy') !== null) return;
+
+  // Select opposite node
   setSelection(
     selection.connection,
     selection.context,
