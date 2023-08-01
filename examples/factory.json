@@ -1,0 +1,9 @@
+{
+  "padi/factory": {
+    "context": "padi",
+    "name": "factory",
+    "title": "Factory",
+    "comment": "Trust stuff",
+    "proxy": "wss://eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJwYWRpLWFwcCIsImlzcyI6IlVhVkVrWG9aNTNEd21yYTBzbUp0Iiwic3ViIjoiUXJOY1B6WUNVYloxTXRNVFZSS2ciLCJpYXQiOjE2OTA1NjIzMDV9.wCZaXpkHjMgJywdAhO2IOQfDilHkJm80dpj1aP6GItk@cns.padi.io:1881#thing/QrNcPzYCUbZ1MtMTVRKg"
+  }
+}

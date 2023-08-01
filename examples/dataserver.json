@@ -1,0 +1,46 @@
+{
+  "dataserver/server": {
+    "context": "dataserver",
+    "name": "server",
+    "title": "Server",
+    "comment": "Data server",
+    "profiles": [
+      {
+        "name": "padi.dataserver",
+        "server": "dataserver/server",
+        "properties": {
+          "uri": "http://database.com"
+        }
+      },
+      {
+        "name": "padi.dataserver",
+        "client": "dataserver/client",
+        "properties": {
+          "id": 1
+        }
+      }
+    ]
+  },
+  "dataserver/client": {
+    "context": "dataserver",
+    "name": "client",
+    "title": "Client",
+    "comment": "Data client",
+    "profiles": [
+      {
+        "name": "padi.dataserver",
+        "client": "dataserver/client",
+        "properties": {
+          "id": 1
+        }
+      },
+      {
+        "name": "padi.dataserver",
+        "server": "dataserver/server",
+        "properties": {
+          "uri": "http://database.com"
+        }
+      }
+    ]
+  }
+}

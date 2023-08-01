@@ -20,7 +20,8 @@ service.start(config, {
     ['--persist', 'level', 'Set persist level'],
     ['--nopersist', null, 'Set non-persistant mode'],
     ['--pub', null, 'Set publish only mode'],
-    ['--sub', null, 'Set subscribe only mode']
+    ['--sub', null, 'Set subscribe only mode'],
+    ['--localhost', null, 'Set to localhost']
   ],
   // Process flag
   flag: (flag, value) => {
@@ -57,6 +58,15 @@ service.start(config, {
       case '--sub':
         // Set subscribe only mode
         service.set('messages', 'pub', false);
+        break;
+      case '--localhost':
+        // Set to localhost
+        service.set('messages', 'protocol', 'ws');
+        service.set('messages', 'host', 'localhost');
+        service.set('messages', 'port', '1881');
+
+        service.set('server', 'host', 'localhost');
+        service.set('server', 'port', '8080');
         break;
     }
   }

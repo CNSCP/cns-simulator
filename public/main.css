@@ -128,7 +128,7 @@ nav a {
   user-drag: none;
 }
 
-nav a:focus,
+nav a:focus-visible,
 nav a:hover,
 nav a[selected] {
   opacity: 1;
@@ -342,24 +342,17 @@ table[grid] li i {
   pointer-events: none;
 }
 
-table[grid] li:hover {
+table[grid] li:hover:not([readonly]) {
   background-color: #f8f8f8;
 }
 
-table[grid] li[proxy],
-table[grid] li[proxy] h5 {
+table[grid] li[proxy] {
   color: #b121f3;
 }
 
 table[grid] li[proxy] span {
   background-color: #b121f3;
 }
-
-/*
-table[grid] li[proxy] button {
-  display: none !important;
-}
-*/
 
 table[grid] li[selected] {
   background-color: #f0f8ff;
@@ -452,6 +445,7 @@ button[primary] {
   color: #ff4081;
 }
 
+button:focus-visible,
 button:hover {
   background-color: rgba(158, 158, 158, 0.2);
 }
@@ -475,8 +469,8 @@ button[raised][primary] {
   color: white;
 }
 
-button[raised]:active,
-button[raised]:focus {
+button[raised]:focus-visible,
+button[raised]:active {
   box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
 }
 
@@ -572,6 +566,10 @@ section[name="export"] textarea {
 #environment,
 #status {
   text-transform: capitalize;
+}
+
+#profiles li[proxy] button {
+  display: none !important;
 }
 
 /* Anti-selection */

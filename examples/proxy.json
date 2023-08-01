@@ -1,0 +1,28 @@
+{
+  "padi/data": {
+    "context": "padi",
+    "name": "data",
+    "title": "Data",
+    "comment": "Proxy",
+    "proxy": "wss://eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJwYWRpLWFwcCIsImlzcyI6ImVRRXVUZWwxeXBkSTkwSkhZUHJmIiwic3ViIjoiSXJYbnBGU1B3ZGVvMHJBOUhqS3AiLCJpYXQiOjE2OTA0NjUzNTh9.uZFjeP7qBSRaKGw79hX9_NDWekmnE14UHKFnhXmEYEQ@cns.padi.io:1881#thing/IrXnpFSPwdeo0rA9HjKp"
+  },
+  "padi/chart": {
+    "context": "padi",
+    "name": "chart",
+    "title": "Chart",
+    "comment": "Proxy",
+    "proxy": "wss://eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJwYWRpLWFwcCIsImlzcyI6Imo2RDZ2aVNOcEtpVUxCNGFiRjZEIiwic3ViIjoiWFVTQnNwa1p5UmJPc2FscUZDeXAiLCJpYXQiOjE2OTA0ODYyNjN9.0KnmfoOnZi-Aa7jA65n4ktuwA4rE9sL8XIPR2NgZN0Q@cns.padi.io:1881#thing/XUSBspkZyRbOsalqFCyp"
+  },
+  "padi/snoop": {
+    "context": "padi",
+    "name": "snoop",
+    "title": "Data snoop",
+    "comment": "Snoop on Padi data proxy",
+    "profiles": [
+      {
+        "name": "padi.dataset",
+        "client": "padi/snoop"
+      }
+    ]
+  }
+}

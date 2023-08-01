@@ -263,10 +263,15 @@ function getOpposite(role) {
 }
 
 // Get profile properties
-function getProperties(topic, name, role) {
+function getProperties(topic, name, role, connection) {
   const profile = getProfile(topic, name, role);
-console.log(topic + ' ' + name + ' ' + role + ' = ', profile);
-  return (profile === undefined)?{}:(profile.properties || {});
+  if (profile === undefined) return {};
+
+  if (profile.proxy !== undefined &&
+    connection !== undefined && connection !== null)
+    return profile.proxy[connection] || {};
+
+  return profile.properties || {};
 }
 
 // Parse json packet
@@ -333,20 +338,24 @@ function update() {
     }
 
     // Add node
+    const p = (data.proxy === undefined)?'':' proxy';
+
     attr = ' topic="' + topic + '"' + attr + ' node="' + name + '"';
-    nodes += '<li' + attr + '>' + name + remove + '</li>';
+    nodes += '<li' + attr + p + '>' + name + remove + '</li>';
 
     // Add profiles
     for (const profile of scan) {
       // Get details
-      const proxy = profile.proxy;
       const name = profile.name;
       const version = profile.version;
+      const proxy = profile.proxy;
       const role = getRole(profile);
-      var link = (role === 'server')?profile.server:profile.client;
+      const opposite = getOpposite(role);
 
-      const badge = '<span>' + role[0].toUpperCase() + '</span>';
+      const b = '<span>' + role[0].toUpperCase() + '</span>';
       const p = (proxy === undefined)?'':' proxy';
+
+      var link = (role === 'server')?profile.server:profile.client;
 
       // Need or use?
       if (link === topic) {
@@ -354,19 +363,31 @@ function update() {
         const v = (version === undefined)?'':('<i>v' + version + '</i>');
         const a = attr + ' profile="' + name + '" role="' + role + '"' + p;
 
-        profiles += '<li' + a + '>' + badge + name + v + remove + '</li>';
+        profiles += '<li' + a + '>' + b + name + v + remove + '</li>';
+
+        // Add proxy connections
+        if (proxy !== undefined) {
+          // Switch badge
+          const b = '<span>' + opposite[0].toUpperCase() + '</span>';
+
+          // Add each connection
+          for (const id in proxy) {
+            const a = attr + ' profile="' + name + '" role="' + role + '" connection="' + id + '" proxy';
+            connections += '<li' + a + '>' + b + id + '</li>';
+          }
+        }
       } else {
         // Add connection
-        var n = link;
+        var id = link;
 
         if (proxy === undefined) {
-          const data = getNode(link);
-          n = (data === undefined)?('<b>' + link + '</b>'):data.name;
+          // Get opposite side?
+          const data = getNode(id);
+          id = (data === undefined)?('<b>' + id + '</b>'):data.name;
         } else link = topic;
 
-        const a = attr + ' profile="' + name + '" role="' + getOpposite(role) + '" connection="' + link + '"' + p;
-
-        connections += '<li' + a + '>' + badge + n + '</li>';
+        const a = attr + ' profile="' + name + '" role="' + opposite + '" connection="' + link + '"' + p;
+        connections += '<li' + a + '>' + b + id + '</li>';
       }
     }
   }
@@ -429,9 +450,6 @@ function filter() {
   $$('#connections li').forEach((e) => hide(e));
 
   // Reset properties lists
-  text('#heading1', 'Server');
-  text('#heading2', 'Client');
-
   html('#properties', '');
   html('#properties1', '');
   html('#properties2', '');
@@ -497,19 +515,19 @@ function filter() {
   items.forEach((e) => attribute(e, 'selected', ''));
   $$('#connections li' + addr).forEach((e) => show(e));
 
-  // Swap property headers?
-  if (role === 'client') {
-    text('#heading1', 'Client');
-    text('#heading2', 'Server');
-  }
+  // Set property headers
+  const opposite = getOpposite(role);
 
-  // Is proxied?
+  text('#heading1', capitalize(role));
+  text('#heading2', capitalize(opposite));
+
+  // Is proxied profile?
   const proxy = getProfile(topic, profile, role).proxy;
   const p = (proxy === undefined)?'':' proxy';
 
   // Fill profile properties
-  attr += attr + ' profile="' + profile + '" role="' + role + '"' + p;
-  html('#properties1', properties(getProperties(topic, profile, role), attr));
+  attr += ' profile="' + profile + '" role="' + role + '"';
+  html('#properties1', properties(getProperties(topic, profile, role), attr + p));
 
   // Select connection
   if (connection === null) return;
@@ -522,10 +540,18 @@ function filter() {
   items.forEach((e) => attribute(e, 'selected', ''));
 
   // Fill connection properties
-  const link = connection.split('/')[1];
-  const opposite = getOpposite(role);
+  if (proxy !== undefined) {
+    // Fill from proxy
+    attr += ' connection="' + connection + '" proxy readonly';
+    html('#properties2', properties(getProperties(topic, profile, role, connection), attr));
 
-  attr = ' topic="' + connection + '" context="' + context + '" node="' + link + '" profile="' + profile + '" role="' + opposite + '"' + p;
+    return;
+  }
+
+  // Fill from other node
+  const link = connection.split('/')[1];
+
+  attr = ' topic="' + connection + '" context="' + context + '" node="' + link + '" profile="' + profile + '" role="' + opposite + '"';
   html('#properties2', properties(getProperties(connection, profile, opposite), attr));
 }
 
@@ -616,6 +642,9 @@ function select(e) {
       }
       break;
     case 'li':
+      // Not readonly?
+      if (attribute(element, 'readonly') !== null) break;
+
       // List item click
       const item = getSelection(element);
 
@@ -782,11 +811,12 @@ function modify(item) {
   const topic = item.topic;
   const profile = item.profile;
   const role = item.role;
+  const connection = item.connection;
   const property = item.property;
 
   const data = (profile === null)?
     getNode(topic):
-    getProperties(topic, profile, role);
+    getProperties(topic, profile, role, connection);
 
   text('dialog[name="set"] h5', property);
   input('set', 'value', toString(data[property]));
@@ -815,12 +845,13 @@ function set(e) {
   const topic = forward.topic;
   const profile = forward.profile;
   const role = forward.role;
+  const connection = forward.connection;
   const property = forward.property;
 
   const node = getNode(topic);
 
   const data = (profile === null)?
-    node:getProperties(topic, profile, role);
+    node:getProperties(topic, profile, role, connection);
 
   data[property] = value;
 
@@ -1222,6 +1253,11 @@ function property(selector, name, value) {
     element[name] = value;
 
   return element[name];
+}
+
+// Capitalize string value
+function capitalize(value) {
+  return value.toLowerCase().replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())));
 }
 
 // Attach event handler
