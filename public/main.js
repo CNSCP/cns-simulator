@@ -522,8 +522,7 @@ function filter() {
   text('#heading2', capitalize(opposite));
 
   // Is proxied profile?
-  const proxy = getProfile(topic, profile, role).proxy;
-  const p = (proxy === undefined)?'':' proxy';
+  const p = (getProfile(topic, profile, role).proxy === undefined)?'':' proxy';
 
   // Fill profile properties
   attr += ' profile="' + profile + '" role="' + role + '"';
@@ -539,8 +538,11 @@ function filter() {
 
   items.forEach((e) => attribute(e, 'selected', ''));
 
+  // Is proxied connection?
+  const c = attribute('#connections li' + addr, 'proxy');
+
   // Fill connection properties
-  if (proxy !== undefined) {
+  if (c !== null) {
     // Fill from proxy
     attr += ' connection="' + connection + '" proxy readonly';
     html('#properties2', properties(getProperties(topic, profile, role, connection), attr));

@@ -1,1 +1,246 @@
-{}
+{
+  "padi/data": {
+    "context": "padi",
+    "name": "data",
+    "title": "Data",
+    "comment": "Proxy",
+    "profiles": [
+      {
+        "name": "padi.dataset",
+        "client": "padi/snoop"
+      },
+      {
+        "name": "padi.dataset",
+        "server": "padi/data",
+        "properties": {
+          "title": "Data 1",
+          "values": "3,2,6",
+          "colours": "green",
+          "labels": "A,B,C"
+        },
+        "proxy": {
+          "9oLfyzMrV8VP6HOxkIOL": {}
+        }
+      }
+    ],
+    "proxy": "wss://eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJwYWRpLWFwcCIsImlzcyI6ImVRRXVUZWwxeXBkSTkwSkhZUHJmIiwic3ViIjoiSXJYbnBGU1B3ZGVvMHJBOUhqS3AiLCJpYXQiOjE2OTA0NjUzNTh9.uZFjeP7qBSRaKGw79hX9_NDWekmnE14UHKFnhXmEYEQ@cns.padi.io:1881#thing/IrXnpFSPwdeo0rA9HjKp/connections"
+  },
+  "padi/chart": {
+    "context": "padi",
+    "name": "chart",
+    "title": "Chart",
+    "comment": "Proxy",
+    "proxy": "wss://eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJwYWRpLWFwcCIsImlzcyI6Imo2RDZ2aVNOcEtpVUxCNGFiRjZEIiwic3ViIjoiWFVTQnNwa1p5UmJPc2FscUZDeXAiLCJpYXQiOjE2OTA0ODYyNjN9.0KnmfoOnZi-Aa7jA65n4ktuwA4rE9sL8XIPR2NgZN0Q@cns.padi.io:1881#thing/XUSBspkZyRbOsalqFCyp",
+    "profiles": [
+      {
+        "name": "padi.dataset",
+        "client": "padi/chart",
+        "proxy": {
+          "9oLfyzMrV8VP6HOxkIOL": {
+            "title": "Data 1",
+            "values": "3,2,6",
+            "colours": "green",
+            "labels": "A,B,C"
+          },
+          "fwoOGnLrmiO9nTvpOeTR": {
+            "title": "Data 2",
+            "values": "1,2,3",
+            "colours": "blue",
+            "labels": "A,B,C"
+          }
+        }
+      },
+      {
+        "name": "padi.dataset",
+        "server": "padi/local",
+        "properties": {
+          "title": "Local",
+          "values": "1,2,3",
+          "colours": "red",
+          "labels": "A,B,C"
+        }
+      }
+    ]
+  },
+  "padi/snoop": {
+    "context": "padi",
+    "name": "snoop",
+    "title": "Data snoop",
+    "comment": "Snoop on Padi data proxy",
+    "profiles": [
+      {
+        "name": "padi.dataset",
+        "client": "padi/snoop"
+      },
+      {
+        "name": "padi.dataset",
+        "server": "padi/data",
+        "properties": {
+          "title": "Data 1",
+          "values": "3,2,6",
+          "colours": "green",
+          "labels": "A,B,C"
+        }
+      },
+      {
+        "name": "padi.dataset",
+        "server": "padi/local",
+        "properties": {
+          "title": "Local",
+          "values": "1,2,3",
+          "colours": "red",
+          "labels": "A,B,C"
+        }
+      }
+    ]
+  },
+  "padi/factory": {
+    "context": "padi",
+    "name": "factory",
+    "title": "Factory",
+    "comment": "Trust stuff",
+    "proxy": "wss://eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJwYWRpLWFwcCIsImlzcyI6IlVhVkVrWG9aNTNEd21yYTBzbUp0Iiwic3ViIjoiUXJOY1B6WUNVYloxTXRNVFZSS2ciLCJpYXQiOjE2OTA1NjIzMDV9.wCZaXpkHjMgJywdAhO2IOQfDilHkJm80dpj1aP6GItk@cns.padi.io:1881#thing/QrNcPzYCUbZ1MtMTVRKg",
+    "profiles": [
+      {
+        "name": "proto.trust.basic",
+        "client": "padi/factory",
+        "properties": {
+          "reqName": "Factory!",
+          "reqSecurity": "4",
+          "reqPrivacy": "4",
+          "reqSafety": "4",
+          "reqReliability": "4",
+          "reqResiliency": "4"
+        },
+        "proxy": {
+          "DIP5On3LtsFDSQwFLwOB": {
+            "provName": "Proxy",
+            "provSecurity": "2",
+            "provPrivacy": "2",
+            "provSafety": "2",
+            "provReliability": "2",
+            "provResiliency": "2"
+          },
+          "JH43FzXJMJFsEtlLMaqz": {
+            "provName": "Machine 2a",
+            "provSecurity": "3",
+            "provPrivacy": "3",
+            "provSafety": "3",
+            "provReliability": "3",
+            "provResiliency": "3"
+          },
+          "Lv2PKEGVIZqzG7VsGJgc": {
+            "provName": "Blob",
+            "provSecurity": "1",
+            "provPrivacy": "1",
+            "provSafety": "1",
+            "provReliability": "1",
+            "provResiliency": "1"
+          },
+          "Yqugw4zYm9Vx7R9swFzW": {
+            "provName": "Machine 4",
+            "provSecurity": "3",
+            "provPrivacy": "3",
+            "provSafety": "5",
+            "provReliability": "3",
+            "provResiliency": "3"
+          },
+          "iJoQbAhT8F7bJTGDAa4O": {
+            "provName": "Machine 1XX",
+            "provSecurity": "4",
+            "provPrivacy": "5",
+            "provSafety": "5",
+            "provReliability": "5",
+            "provResiliency": "5"
+          },
+          "oQBZq5sq2fnXb4xEz2r0": {
+            "provName": "Machine 3",
+            "provSecurity": "5",
+            "provPrivacy": "5",
+            "provSafety": "5",
+            "provReliability": "5",
+            "provResiliency": "5"
+          },
+          "s85AoB31ghobOAxE2pYL": {
+            "provName": "HVAC",
+            "provSecurity": "3",
+            "provPrivacy": "2",
+            "provSafety": "4",
+            "provReliability": "3",
+            "provResiliency": "3"
+          }
+        }
+      }
+    ]
+  },
+  "broker/server": {
+    "context": "broker",
+    "name": "server",
+    "title": "Proxy",
+    "comment": "Proxy to broker",
+    "proxy": "wss://guest:cnscp@broker01.test.cns.dev:1883#cns/dataserver/server",
+    "profiles": [
+      {
+        "name": "padi.dataserver",
+        "server": "broker/server",
+        "properties": {
+          "uri": "asgsdfgsdfg12"
+        },
+        "proxy": {
+          "dataserver/client": {
+            "id": 1
+          }
+        }
+      }
+    ]
+  },
+  "broker/data": {
+    "context": "broker",
+    "name": "data",
+    "title": "Data",
+    "comment": "Data Proxy Proxy",
+    "proxy": "wss://guest:cnscp@broker01.test.cns.dev:1883#cns/padi/data",
+    "profiles": [
+      {
+        "name": "padi.dataset",
+        "server": "broker/data",
+        "properties": {
+          "title": "Data 1",
+          "values": "3,2,6",
+          "colours": "green",
+          "labels": "A,B,C"
+        },
+        "proxy": {
+          "9oLfyzMrV8VP6HOxkIOL": {},
+          "padi/snoop": {}
+        }
+      }
+    ]
+  },
+  "padi/local": {
+    "context": "padi",
+    "name": "local",
+    "title": "Local data",
+    "comment": "Local data for chart",
+    "profiles": [
+      {
+        "name": "padi.dataset",
+        "server": "padi/local",
+        "properties": {
+          "title": "Local",
+          "values": "1,2,3",
+          "colours": "red",
+          "labels": "A,B,C"
+        }
+      },
+      {
+        "name": "padi.dataset",
+        "client": "padi/chart"
+      },
+      {
+        "name": "padi.dataset",
+        "client": "padi/snoop"
+      }
+    ]
+  }
+}
