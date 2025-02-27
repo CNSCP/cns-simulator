@@ -7,7 +7,10 @@
     "profiles": [
       {
         "name": "padi.dataset",
-        "client": "padi/snoop"
+        "client": "padi/snoop",
+        "properties": {
+          "filter": ""
+        }
       },
       {
         "name": "padi.dataset",
@@ -16,7 +19,8 @@
           "title": "Data 1",
           "values": "3,2,6",
           "colours": "green",
-          "labels": "A,B,C"
+          "labels": "A,B,C",
+          "status": ""
         },
         "proxy": {
           "9oLfyzMrV8VP6HOxkIOL": {}
@@ -34,7 +38,21 @@
     "profiles": [
       {
         "name": "padi.dataset",
+        "server": "padi/local",
+        "properties": {
+          "title": "Local",
+          "values": "1,2,3",
+          "colours": "red",
+          "labels": "A,B,C",
+          "status": ""
+        }
+      },
+      {
+        "name": "padi.dataset",
         "client": "padi/chart",
+        "properties": {
+          "filter": ""
+        },
         "proxy": {
           "9oLfyzMrV8VP6HOxkIOL": {
             "title": "Data 1",
@@ -48,16 +66,6 @@
             "colours": "blue",
             "labels": "A,B,C"
           }
-        }
-      },
-      {
-        "name": "padi.dataset",
-        "server": "padi/local",
-        "properties": {
-          "title": "Local",
-          "values": "1,2,3",
-          "colours": "red",
-          "labels": "A,B,C"
         }
       }
     ]
@@ -105,22 +113,14 @@
         "name": "proto.trust.basic",
         "client": "padi/factory",
         "properties": {
-          "reqName": "Factory!",
-          "reqSecurity": "4",
-          "reqPrivacy": "4",
-          "reqSafety": "4",
-          "reqReliability": "4",
-          "reqResiliency": "4"
+          "reqName": "Normal Operation",
+          "reqSecurity": "3",
+          "reqPrivacy": "3",
+          "reqSafety": "3",
+          "reqReliability": "3",
+          "reqResiliency": "3"
         },
         "proxy": {
-          "DIP5On3LtsFDSQwFLwOB": {
-            "provName": "Proxy",
-            "provSecurity": "2",
-            "provPrivacy": "2",
-            "provSafety": "2",
-            "provReliability": "2",
-            "provResiliency": "2"
-          },
           "JH43FzXJMJFsEtlLMaqz": {
             "provName": "Machine 2a",
             "provSecurity": "3",
@@ -133,7 +133,7 @@
             "provName": "Blob",
             "provSecurity": "1",
             "provPrivacy": "1",
-            "provSafety": "1",
+            "provSafety": "5",
             "provReliability": "1",
             "provResiliency": "1"
           },
@@ -163,9 +163,9 @@
           },
           "s85AoB31ghobOAxE2pYL": {
             "provName": "HVAC",
-            "provSecurity": "3",
+            "provSecurity": 3,
             "provPrivacy": "2",
-            "provSafety": "4",
+            "provSafety": 3,
             "provReliability": "3",
             "provResiliency": "3"
           }
@@ -208,11 +208,14 @@
           "title": "Data 1",
           "values": "3,2,6",
           "colours": "green",
-          "labels": "A,B,C"
+          "labels": "A,B,C",
+          "status": ""
         },
         "proxy": {
           "9oLfyzMrV8VP6HOxkIOL": {},
-          "padi/snoop": {}
+          "padi/snoop": {
+            "filter": ""
+          }
         }
       }
     ]
@@ -242,5 +245,54 @@
         "client": "padi/snoop"
       }
     ]
+  },
+  "aaa/node2": {
+    "context": "aaa",
+    "name": "node2",
+    "title": "n2",
+    "comment": "poi",
+    "profiles": [
+      {
+        "name": "test.abc",
+        "client": "aaa/node2",
+        "properties": {
+          "foo1": "",
+          "foo2": ""
+        }
+      },
+      {
+        "name": "test.abc",
+        "server": "aaa/node1",
+        "properties": {
+          "far1": "",
+          "far2": ""
+        }
+      }
+    ]
+  },
+  "aaa/node1": {
+    "context": "aaa",
+    "name": "node1",
+    "title": "N1",
+    "comment": "kjkj",
+    "profiles": [
+      {
+        "name": "test.abc",
+        "server": "aaa/node1",
+        "properties": {
+          "far1": "",
+          "far2": ""
+        }
+      },
+      {
+        "name": "test.abc",
+        "client": "aaa/node2",
+        "properties": {
+          "foo1": "",
+          "foo2": ""
+        }
+      }
+    ],
+    "uri": "https://www.linkedin.com/company/mondaylive"
   }
 }
