@@ -27,9 +27,9 @@ options:
 
 substitutions:
   _APP_NAME: cns-simulator
-  _ARTIFACT_REGISTRY_REPO: cnscp
+  _ARTIFACT_REGISTRY_REPO: cnscp-preprod
   _ENV: staging
   _GCR_IMAGE: >-
     us-central1-docker.pkg.dev/${_GCR_PROJ}/${_ARTIFACT_REGISTRY_REPO}/${_APP_NAME}
-  _GCR_PROJ: padi-staging
-  _TAG: latest
+  _GCR_PROJ: padi-80910
+  _TAG: staging
